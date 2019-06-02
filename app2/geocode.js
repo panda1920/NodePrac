@@ -1,10 +1,10 @@
 const request = require("request");
-
-const MAPBOXTOKEN = 'pk.eyJ1IjoicGFuZGExOTIwIiwiYSI6ImNqdnplcHJzZzBxMXUzem1pbnJ4a2dnZ2MifQ.F4jQl5801SNSsGLw_Ey9yQ';
+const tokens  = require("./tokens.js");
 
 function geocode(address, callback) {
     let encodedAddressString = encodeURI(address);
-    let url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodedAddressString}.json?access_token=${MAPBOXTOKEN}`;
+    let mapboxToken          = tokens.getTokens().mapbox;
+    let url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodedAddressString}.json?access_token=${mapboxToken}`;
 
     request( {url: url, json: true}, (error, response) => {
         if (error) {

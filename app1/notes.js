@@ -32,6 +32,7 @@ function removeNote(title) {
 }
 
 function listNotes() {
+    debugger;
     console.log(chalk.yellow("Your notes:"));
 
     const notes = loadNotes();

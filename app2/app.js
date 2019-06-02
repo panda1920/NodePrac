@@ -1,27 +1,32 @@
-const request = require("request");
-const chalk   = require("chalk");
-const geocode = require("./geocode.js");
+const request  = require("request");
+const chalk    = require("chalk");
+const geocode  = require("./geocode.js");
+const forecast = require("./forecast.js");
+const tokens   = require("./tokens.js");
 
 function printWeather(address) {
-    geocode(address, requestDarksky);
+    geocode(address, callbackOfGeocode);
 }
-
-function requestDarksky(error, data) {
-    const PARAMS = "?units=si";
-    let url = `https://api.darksky.net/forecast/757f0bbab33583f88697f2ca3f2e1e0f/${data.long},${data.lat}${PARAMS}`;
-    
+function callbackOfGeocode(error, response) {
     if (error) {
         console.log(error);
     }
     else {
-        request( { url:url, json:true }, (err, response) => {
-            console.log(chalk.yellow(`Current weather of ${data.address}:`));
-            console.log(`\ttemperature: ${response.body.currently.temperature} Celsius`);
-            console.log(`\thumidity: ${response.body.currently.humidity* 100} %`);
-        });
+        forecast(response.long, response.lat, response.address, callbackOfForecast);
+    }
+}
+function callbackOfForecast(error, response) {
+    if (error) {
+        console.log(err);
+    }
+    else {
+        console.log(chalk.yellow(`Current weather of ${response.address}:`));
+        console.log(`\ttemperature: ${response.body.currently.temperature} Celsius`);
+        console.log(`\thumidity: ${response.body.currently.humidity* 100} %`);
     }
 }
 
 
 
 printWeather("TOkyo shinagawa");
+// console.log(tokens.getTokens());
