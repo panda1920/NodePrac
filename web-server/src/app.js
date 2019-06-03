@@ -27,18 +27,18 @@ hbs.registerPartials(PARTIALS_PATH);
 app.use( express.static(SHARE_PATH) );
 
 // get() method defines what the server does when user access the location specified
+// route GET request
 app.get("/weather", (req, res) => {
+    if (!req.query.address) {
+        res.render("index", createSubstituteObject("weather", "no address was specified"));
+        return;
+    }
+
     res.send({
-        forcast: {
-            temperature: 38.5,
-            weather: "cloudy",
-            humidity: 0.7
-        },
-        location: "Tokyo"
+        forecast: "some weather",
+        location: req.query.address
     });
 });
-
-// route GET request
 app.get("", (req, res) => {
     res.render("index", createSubstituteObject("index", ""));
 });
