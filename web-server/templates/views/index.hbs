@@ -7,8 +7,13 @@
     </head>
     <body>
         {{>header}}
-        <div class="main-content">
-            <p>{{message}}</p>
+        <div id="main-content">
+            <form>
+                <input type="text" placeholder="type addres here...">
+                <button type="button">Search</button>
+            </form>
+            <p id="errorMessage"></p>
+            <p id="forecast"></p>
         </div>
         {{>footer}}
     </body>

@@ -1,6 +1,8 @@
-const path    = require("path");
-const express = require("express");
-const hbs     = require("hbs");
+const path     = require("path");
+const express  = require("express");
+const hbs      = require("hbs");
+const geocode  = require("./geocode/geocode.js");
+const forecast = require("./geocode/forecast.js");
 
 // create object accessible from views
 function createSubstituteObject(title, msg) {
@@ -9,6 +11,9 @@ function createSubstituteObject(title, msg) {
         name: "panda1920",
         message: msg
     };
+}
+function renderErrorPage(res, title, msg) {
+    res.render("showmessage", createSubstituteObject(title, msg));
 }
 
 // define paths for exoress
@@ -30,29 +35,51 @@ app.use( express.static(SHARE_PATH) );
 // route GET request
 app.get("/weather", (req, res) => {
     if (!req.query.address) {
-        res.render("index", createSubstituteObject("weather", "no address was specified"));
+        res.render("index", {});
         return;
     }
 
-    res.send({
-        forecast: "some weather",
-        location: req.query.address
+    geocode(req.query.address, (err, response) => {
+        if (err) {
+            // renderErrorPage(res, "weather", err);
+            res.send({
+                errorMessage: err
+            })
+            return;
+        }
+        
+        forecast(response.long, response.lat, response.address, (err, response) => {
+            if (err) {
+                // renderErrorPage(res, "weather", err);
+                res.send({
+                    errorMessage: err
+                })
+                return;
+            }
+
+            res.send({
+                location: response.address,
+                temperature: response.body.currently.temperature,
+                humidity: response.body.currently.humidity,
+                forecast: response.body.currently.summary
+            });
+        });
     });
 });
 app.get("", (req, res) => {
-    res.render("index", createSubstituteObject("index", ""));
+    res.render("showmessage", createSubstituteObject("index", ""));
 });
 app.get("/about", (req, res) => {
-    res.render("index", createSubstituteObject("about", ""));
+    res.render("showmessage", createSubstituteObject("about", ""));
 });
 app.get("/help", (req, res) => {
-    res.render("index", createSubstituteObject("help", "This is a web app that I am currently developing."));
+    res.render("showmessage", createSubstituteObject("help", "This is a web app that I am currently developing."));
 });
 app.get("/help/*", (req, res) => {
-    res.render("error", createSubstituteObject("404 ERROR" ,"Help article not found."));
+    res.render("showmessage", createSubstituteObject("404 ERROR" ,"Help article not found."));
 });
 app.get("*", (req, res) => {
-    res.render("error", createSubstituteObject("404 ERROR" ,"Page not found."));
+    res.render("showmessage", createSubstituteObject("404 ERROR" ,"Page not found."));
 })
 
 app.listen(3000, () => {
