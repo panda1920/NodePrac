@@ -1,4 +1,4 @@
-const WEATHER_ENDPOINT_URL = "http://localhost:3000/weather";
+const WEATHER_ENDPOINT_URL = "/weather";
 
 function setPageToSearching() {
     setPageMessage("Searching...", "");
@@ -12,7 +12,7 @@ function setPageMessage(msg1, msg2) {
 }
 
 function sendRequestToWeatherApp(address) {
-    if (!address) {
+    if (!address) { 
         setPageMessage("Enter address before search. Search aborted", ""); return
     }
 

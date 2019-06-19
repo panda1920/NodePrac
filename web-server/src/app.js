@@ -23,6 +23,9 @@ const PARTIALS_PATH = path.join(__dirname, "../templates/partials");
 
 const app = express();
 
+// set port to heroku port if available
+const PORT = process.env.PORT || 3000;
+
 // setup handlebars and view location
 app.set("view engine", "hbs");
 app.set("views", VIEWS_PATH);
@@ -82,6 +85,6 @@ app.get("*", (req, res) => {
     res.render("showmessage", createSubstituteObject("404 ERROR" ,"Page not found."));
 })
 
-app.listen(3000, () => {
-    console.log("Server is up on port 3000");
+app.listen(PORT, () => {    
+    console.log(`Server is up on port ${PORT}`);
 });
