@@ -60,11 +60,18 @@ app.get("/weather", (req, res) => {
                 return;
             }
 
+            let location = response.address;
+            let temperature = response.body.currently.temperature;
+            let humidity = response.body.currently.humidity;
+            let summary = response.body.currently.summary;
+            let forecast = `The current weather of ${location} is ${summary}, with a temperature of ${temperature} Celsius and humidity of ${humidity * 100}%`;
+
             res.send({
-                location: response.address,
-                temperature: response.body.currently.temperature,
-                humidity: response.body.currently.humidity,
-                forecast: response.body.currently.summary
+                location,
+                temperature,
+                humidity,
+                summary,
+                forecast
             });
         });
     });

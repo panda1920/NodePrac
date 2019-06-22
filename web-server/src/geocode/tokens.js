@@ -1,7 +1,7 @@
 const fs   = require("fs");
 const path = require("path");
 
-const TOKENFILE = path.join(__dirname, "APItokens.txt");
+const TOKENFILE = path.join(__dirname, "APItokens.json");
 
 function getTokens() {
     try {

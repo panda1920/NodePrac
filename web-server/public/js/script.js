@@ -19,7 +19,7 @@ function sendRequestToWeatherApp(address) {
     fetch(WEATHER_ENDPOINT_URL + `?address=${address}`)
     .then(
         response => {
-            return response.text();
+            return response.json();
         }
     ).then(
         data => {
@@ -27,7 +27,7 @@ function sendRequestToWeatherApp(address) {
                 setPageMessage(data.errorMessage);
             }
             else {
-                setPageMessage("", data);
+                setPageMessage("", data.forecast);
             }
         }
     ).catch(
