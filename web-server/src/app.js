@@ -73,10 +73,10 @@ app.get("", (req, res) => {
     res.render("showmessage", createSubstituteObject("index", ""));
 });
 app.get("/about", (req, res) => {
-    res.render("showmessage", createSubstituteObject("about", ""));
+    res.render("about", {});
 });
 app.get("/help", (req, res) => {
-    res.render("showmessage", createSubstituteObject("help", "This is a web app that I am currently developing."));
+    res.render("help", createSubstituteObject("help", "This is a web app that I am currently developing."));
 });
 app.get("/help/*", (req, res) => {
     res.render("showmessage", createSubstituteObject("404 ERROR" ,"Help article not found."));
