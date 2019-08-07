@@ -2,5 +2,8 @@
     "scripts": {
         "postinstall": "cd web-server && npm install",
         "start": "node ./web-server/src/app.js"
+    },
+    "dependencies": {
+        "mongoose": "^5.6.8"
     }
 }

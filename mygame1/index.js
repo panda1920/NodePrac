@@ -12,7 +12,6 @@ app.use(/\/api\/character/, (req, res) => {
     console.log("You are interacting with character api!");
     res.json({name: 'joshua', age: 14});
 });
-
 app.listen(PORTNUM, () => {
     console.log(`Listening on ${PORTNUM}`);
 });
