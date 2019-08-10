@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 
-// defining collections
-const User = mongoose.model("User", {
+const schema = new mongoose.Schema({
     // configure field for the User document
     name: {
         type: String,
@@ -40,5 +39,7 @@ const User = mongoose.model("User", {
         }
     }
 });
+
+const User = mongoose.model("User", schema);
 
 module.exports = User;

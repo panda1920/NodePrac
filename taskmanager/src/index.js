@@ -14,5 +14,5 @@ app.use(taskRouter);
 
 // start listening to port
 app.listen(PORTNUM, () => {
-    console.log(`Server num is ${PORTNUM}`);
+    console.log(`Server is running on ${PORTNUM}`);
 });
