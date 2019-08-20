@@ -48,6 +48,13 @@ const schema = new mongoose.Schema({
     }]
 });
 
+// define virtual properties
+schema.virtual('tasks', {
+    ref: 'Task',
+    localField: '_id',
+    foreignField: 'owner'
+});
+
 // define hooks
 schema.pre('save', async function(next) {
     const user = this;

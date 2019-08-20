@@ -9,17 +9,6 @@ let router = express.Router();
 router.get('/users/me', auth, async (req, res) => {
     res.status(200).send(req.authenticatedUser);
 });
-router.get('/users/:id', auth, async (req, res) => {
-    let userId = req.params.id;
-
-    try {
-        let user = await User.findOne({_id: userId});
-        if (!user) res.status(404).send();
-        else res.status(200).send(user);
-    } catch(e) {
-        res.status(500).send(e);
-    }
-});
 
 // route create requests
 router.post('/users', async (req, res) => {
@@ -37,18 +26,13 @@ router.post('/users', async (req, res) => {
 });
 
 // route update requests
-router.patch('/users/:id', auth, async (req, res) => {
+router.patch('/users/me', auth, async (req, res) => {
     let update = req.body;
     if (!routerUtils.isUpdateValid(update, User))
         return res.status(400).send("Invalid update");
 
-    let userId = req.params.id;
     try {
-        let user = await User.findById(userId);
-        if (!user) {
-            return res.status(404).send("User not found");
-        }
-        
+        let user = req.authenticatedUser;
         Object.keys(update).forEach((field) => {
             user[field] = update[field];
         })
@@ -62,8 +46,8 @@ router.patch('/users/:id', auth, async (req, res) => {
 });
 
 // route delete requests
-router.delete('/users/:id', auth, async (req, res) => {
-    let userId = req.params.id;
+router.delete('/users/me', auth, async (req, res) => {
+    let userId = req.authenticatedUser._id;
 
     try {
         let deleteResult = await User.deleteOne({_id: userId});
@@ -73,7 +57,7 @@ router.delete('/users/:id', auth, async (req, res) => {
             res.status(200).send(deleteResult);
     } catch (e) {
         res.status(500).send(e);
-    }
+    } 
 });
 
 // route login request

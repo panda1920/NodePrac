@@ -8,7 +8,7 @@ const auth = async (req, res, next) => {
         let user = await User.findOne({_id: decoded._id, 'tokens.token': token});
         
         if (!user)
-        throw new Error();
+            throw new Error();
         
         req.authToken = token;
         req.authenticatedUser = user;
