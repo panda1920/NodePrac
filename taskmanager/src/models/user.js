@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const Task = require('../models/task');
 
 const schema = new mongoose.Schema({
     // configure field for the User document
@@ -61,6 +62,17 @@ schema.pre('save', async function(next) {
 
     if (user.isModified('password')) {
         user.password = await bcrypt.hash(user.password, 8);
+    }
+
+    next();
+});
+schema.pre('remove', async function(next) {
+    const user = this;
+
+    try {
+        await Task.deleteMany({owner: user._id});
+    } catch(e) {
+        console.log('Error: Failed to delete tasks upon user deletion.');
     }
 
     next();

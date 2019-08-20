@@ -47,14 +47,9 @@ router.patch('/users/me', auth, async (req, res) => {
 
 // route delete requests
 router.delete('/users/me', auth, async (req, res) => {
-    let userId = req.authenticatedUser._id;
-
     try {
-        let deleteResult = await User.deleteOne({_id: userId});
-        if (deleteResult.deletedCount === 0) 
-            res.status(404).send();
-        else 
-            res.status(200).send(deleteResult);
+        let result = await req.authenticatedUser.remove();
+        res.status(200).send(result);
     } catch (e) {
         res.status(500).send(e);
     } 
