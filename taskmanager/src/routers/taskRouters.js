@@ -6,19 +6,19 @@ const auth = require('../middleware/auth');
 let router = express.Router();
 
 // route read requests
-router.get('/tasks', async (req, res) => {
+router.get('/tasks', auth, async (req, res) => {
     try {
-        let tasks = await Task.find({});
+        let tasks = await Task.find({owner: req.authenticatedUser._id});
         res.status(200).send(tasks);
     } catch(e) {
         res.status(500).send(e);
     }
 });
-router.get('/tasks/:taskId', async (req, res) => {
+router.get('/tasks/:taskId', auth, async (req, res) => {
     let taskId = req.params.taskId;
 
     try {
-        let task = await Task.find({_id: taskId});
+        let task = await Task.findOne({_id: taskId, owner: req.authenticatedUser._id});
         if (!task) res.status(404).send();
         else res.status(200).send(task);
     } catch(e) {
@@ -41,14 +41,14 @@ router.post('/tasks', auth, async (req, res) => {
 });
 
 // route update requests
-router.patch('/tasks/:id', async (req, res) => {
+router.patch('/tasks/:id', auth, async (req, res) => {
     let update = req.body;
     if (!routerUtils.isUpdateValid(update, Task))
         return res.status(400).send("Invalid update");
 
     let taskId = req.params.id;
     try {
-        let task = await Task.findById(taskId);
+        let task = await Task.findOne({_id: taskId, owner: req.authenticatedUser._id});
         if (!task) {
             return res.status(404).send("Task not found");
         }
@@ -66,11 +66,11 @@ router.patch('/tasks/:id', async (req, res) => {
 });
 
 // route delete requests
-router.delete('/tasks/:id', async (req, res) => {
+router.delete('/tasks/:id', auth, async (req, res) => {
     let taskId = req.params.id;
 
     try {
-        let deleteResult = await Task.deleteOne({_id: taskId});
+        let deleteResult = await Task.deleteOne({_id: taskId, owner: req.authenticatedUser._id});
         if (deleteResult.deletedCount === 0) 
             res.status(404).send();
         else 
