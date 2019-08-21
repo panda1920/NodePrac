@@ -47,7 +47,7 @@ const schema = new mongoose.Schema({
             required: true
         }
     }]
-});
+}, {timestamps: true});
 
 // define virtual properties
 schema.virtual('tasks', {

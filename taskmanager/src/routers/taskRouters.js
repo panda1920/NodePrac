@@ -7,13 +7,27 @@ let router = express.Router();
 
 // route read requests
 router.get('/tasks', auth, async (req, res) => {
+    let filter = routerUtils.formFilterFromQuery(req.query, Task);
+    let pagination = routerUtils.formPaginationOptions(req.query);
+    let sort = routerUtils.formSortOption(req.query, Task);
+
+    console.log(sort);
+    
     try {
-        let tasks = await Task.find({owner: req.authenticatedUser._id});
+        let tasks = await Task.find(
+            {owner: req.authenticatedUser._id, ...filter},
+            null,
+            {
+                ...pagination,
+                sort: {...sort}
+            }
+        );
         res.status(200).send(tasks);
     } catch(e) {
         res.status(500).send(e);
     }
 });
+
 router.get('/tasks/:taskId', auth, async (req, res) => {
     let taskId = req.params.taskId;
 
