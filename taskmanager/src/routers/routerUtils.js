@@ -46,12 +46,16 @@ function formSortOption(query, model) {
     if (!modelUtils.doesFieldExistInModel([fieldToSort], model))
         return sortOption;
     
-    if (order === 'asc')
-        sortOption[fieldToSort] = 1
-    else if (order === 'desc')
-        sortOption[fieldToSort] = -1;
+    sortOption[fieldToSort] = sanitizeSortOrder(order);
 
     return sortOption;
+}
+function sanitizeSortOrder(order) {
+    if (order === 'asc')
+        return 1;
+    else if (order === 'desc')
+        return -1;
+    return undefined;
 }
 
 module.exports = {isUpdateValid, formFilterFromQuery, formPaginationOptions, formSortOption};

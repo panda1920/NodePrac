@@ -46,7 +46,10 @@ const schema = new mongoose.Schema({
             type: String,
             required: true
         }
-    }]
+    }],
+    avatar: {
+        type: Buffer
+    }
 }, {timestamps: true});
 
 // define virtual properties
@@ -82,7 +85,7 @@ schema.pre('remove', async function(next) {
 schema.methods.createAuthToken = function() {
     let user = this;
 
-    return jwt.sign({_id: user._id.toString()}, 'thisismycourse');
+    return jwt.sign({_id: user._id.toString()}, process.env.JWT_SECRET);
 }
 schema.methods.saveToken = async function(token) {
     let user = this;
@@ -96,6 +99,7 @@ schema.methods.toJSON = function() {
 
     delete publicProfile.password;
     delete publicProfile.tokens;
+    delete publicProfile.avatar;
 
     return publicProfile;
 }
