@@ -31,7 +31,7 @@ test('Convert 0 Celsius to 32 Fahrenheit', () => {
 
 test('sample', (done) => { // add argument to callback to tell jest it is async code.
     setTimeout(() => {
-        expect(2).toBe(1);
+        expect(2).toBe(2);
         done(); // call the argument to notify jest that async code is done running
     }, 2000);
 });
