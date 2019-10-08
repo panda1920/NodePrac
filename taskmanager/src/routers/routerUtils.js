@@ -37,7 +37,7 @@ function formPaginationOptions(query) {
 }
 
 function formSortOption(query, model) {
-    if (query.sortBy === null)
+    if (!query.sortBy)
         return {};
 
     let {0: fieldToSort, 1: order} = query.sortBy.split('_');

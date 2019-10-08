@@ -11,8 +11,6 @@ router.get('/tasks', auth, async (req, res) => {
     let pagination = routerUtils.formPaginationOptions(req.query);
     let sort = routerUtils.formSortOption(req.query, Task);
 
-    console.log(sort);
-    
     try {
         let tasks = await Task.find(
             {owner: req.authenticatedUser._id, ...filter},

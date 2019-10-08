@@ -1,0 +1,23 @@
+{
+  "name": "chatapp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --watch --runInBand",
+    "dev": "./node_modules/.bin/env-cmd -f ./config/.env nodemon ./src/index.js",
+    "start": "./node_modules/.bin/env-cmd -f ./config/.envnode node ./src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "jest": "^24.9.0",
+    "nodemon": "^1.19.1"
+  },
+  "dependencies": {
+    "env-cmd": "^10.0.1",
+    "express": "^4.17.1",
+    "socket.io": "^2.2.0"
+  }
+}

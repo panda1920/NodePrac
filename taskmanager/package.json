@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node ./src/index.js",
     "dev": "./node_modules/.bin/env-cmd -f ./config/dev.env nodemon ./src/index.js",
-    "test": "./node_modules/.bin/env-cmd -f ./config/test.env jest --watch"
+    "test": "./node_modules/.bin/env-cmd -f ./config/test.env jest --watch --runInBand",
+    "exp": "./node_modules/.bin/env-cmd -f ./config/test.env node ./tests/randodm.js"
   },
   "jest": {
     "testEnvironment": "node"
